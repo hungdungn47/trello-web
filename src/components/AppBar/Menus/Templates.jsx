@@ -32,7 +32,7 @@ export default function Templates() {
         onClick={handleClick}
         endIcon={<ArrowDropDownIcon/>}
       >
-        templates
+        Templates
       </Button>
       <Menu
         id="basic-menu-templates"

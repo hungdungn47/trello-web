@@ -32,7 +32,7 @@ export default function Starred() {
         onClick={handleClick}
         endIcon={<ArrowDropDownIcon/>}
       >
-        starred
+        Starred
       </Button>
       <Menu
         id="basic-menu-starred"

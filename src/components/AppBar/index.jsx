@@ -40,11 +40,11 @@ export default function AppBar() {
         <ModeSelect/>
         <Tooltip title="Notifications">
           <Badge color="secondary" variant="dot" sx={{ cursor: 'pointer' }} >
-            <NotificationsIcon />
+            <NotificationsIcon sx={{ color: 'primary.main' }} />
           </Badge>
         </Tooltip>
         <Tooltip title="Help">
-          <HelpOutlineIcon/>
+          <HelpOutlineIcon sx={{ color: 'primary.main' }} />
         </Tooltip>
         <Account/>
       </Box>
