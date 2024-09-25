@@ -64,7 +64,11 @@ export default function BoardBar() {
             border: 'none',
             width: 34,
             height: 34,
-            fontSize: '16px'
+            fontSize: '16px',
+            cursor: 'pointer',
+            '&:first-of-type': {
+              bgcolor: '#a4b0be'
+            }
           }
         }}>
           <Tooltip title='Hung Dung'>
