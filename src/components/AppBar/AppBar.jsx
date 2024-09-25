@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
 import AppsIcon from '@mui/icons-material/Apps'
 import trelloLogo from '~/assets/trello-logo.png'
-import ModeSelect from '~/components/ModeSelect'
+import ModeSelect from '~/components/ModeSelect/ModeSelect'
 import Workspaces from './Menus/Workspaces'
 import Recent from './Menus/Recent'
 import Starred from './Menus/Starred'
