@@ -37,137 +37,415 @@ export default function BoardContent() {
     <Box sx={{
       height: (theme) => (theme.trello.boardContentHeight),
       bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'),
-      display: 'flex'
+      padding: '10px 0'
     }}>
       <Box sx={{
-        width: '300px',
-        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
-        marginLeft: 2,
-        borderRadius: '6px'
+        bgcolor: 'inherit',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        '&::-webkit-scrollbar-track': { m: 2 }
       }}>
         <Box sx={{
-          height: COLUMN_HEADER_HEIGHT,
-          padding: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          width: '300px',
+          bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
+          marginLeft: 2,
+          borderRadius: '6px',
+          height: 'fit-content',
+          maxHeight: (theme) => (`calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`)
         }}>
-          <Typography sx={{
-            fontWeight: 'bold',
-            cursor: 'pointer'
-          }}>Column title</Typography>
-          <Box>
-            <Tooltip title='More options'>
-              <ExpandMoreIcon
-                sx={{ color: 'text.primary', cursor: 'pointer' }}
-                id="basic-button-workspaces"
-                aria-controls={open ? 'basic-menu-workspaces' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-                endicon={<ArrowDropDownIcon/>}
-              ></ExpandMoreIcon>
+          <Box sx={{
+            height: COLUMN_HEADER_HEIGHT,
+            padding: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Typography variant="h6" sx={{
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}>Column title</Typography>
+            <Box>
+              <Tooltip title='More options'>
+                <ExpandMoreIcon
+                  sx={{ color: 'text.primary', cursor: 'pointer' }}
+                  id="basic-button-workspaces"
+                  aria-controls={open ? 'basic-menu-workspaces' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                  endicon={<ArrowDropDownIcon/>}
+                ></ExpandMoreIcon>
+              </Tooltip>
+              <Menu
+                id="basic-menu-workspaces"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button-workspaces'
+                }}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCut fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Cut</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopy fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Copy</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentPaste fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Paste</ListItemText>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <ListItemIcon><DeleteIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText>Remove this column</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon><Cloud fontSize="small" /></ListItemIcon>
+                  <ListItemText>Archive this column</ListItemText>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+
+          <Box sx={{
+            padding: '0 5px',
+            margin: '0 5px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            maxHeight: (theme) => (`calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)} - ${COLUMN_HEADER_HEIGHT} - ${COLUMN_FOOTER_HEIGHT})`),
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#bdc0ca',
+              borderRadius: '5px'
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#aaaaaa'
+            }
+          }}>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgb(0, 0, 0, 0.3)',
+              overflow: 'unset'
+            }}>
+              <CardMedia
+                sx={{ height: 140 }}
+                image="https://chuyentactical.com/wp-content/uploads/2023/09/kinh-nghiem-du-lich-ta-xua-4-chuyentactical.com_.jpg"
+                title="green iguana"
+              />
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Hung Dung
+                </Typography>
+              </CardContent>
+              <CardActions sx={{
+                padding: '0 4px 8px 4px'
+              }}>
+                <Button startIcon={<GroupIcon/>} size="small">20</Button>
+                <Button startIcon={<CommentIcon/>} size="small">17</Button>
+                <Button startIcon={<AttachmentIcon/>} size="small">8</Button>
+              </CardActions>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+
+          <Box sx={{
+            height: COLUMN_FOOTER_HEIGHT,
+            padding: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Button startIcon={<AddCardRounded/>}>Add new cards</Button>
+            <Tooltip title='Drag to move'>
+              <DragHandleIcon/>
             </Tooltip>
-            <Menu
-              id="basic-menu-workspaces"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button-workspaces'
-              }}
-            >
-              <MenuItem>
-                <ListItemIcon>
-                  <ContentCut fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Cut</ListItemText>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <ContentCopy fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Copy</ListItemText>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <ContentPaste fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Paste</ListItemText>
-              </MenuItem>
-              <Divider />
-              <MenuItem>
-                <ListItemIcon><DeleteIcon fontSize="small" /></ListItemIcon>
-                <ListItemText>Remove this column</ListItemText>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon><Cloud fontSize="small" /></ListItemIcon>
-                <ListItemText>Archive this column</ListItemText>
-              </MenuItem>
-            </Menu>
           </Box>
         </Box>
-
         <Box sx={{
-          padding: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1
+          width: '300px',
+          bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
+          marginLeft: 2,
+          borderRadius: '6px',
+          height: 'fit-content',
+          maxHeight: (theme) => (`calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`)
         }}>
-          <Card sx={{
-            cursor: 'pointer',
-            boxShadow: '0 1px 1px rgb(0, 0, 0, 0.3)'
+          <Box sx={{
+            height: COLUMN_HEADER_HEIGHT,
+            padding: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
           }}>
-            <CardMedia
-              sx={{ height: 140 }}
-              image="https://chuyentactical.com/wp-content/uploads/2023/09/kinh-nghiem-du-lich-ta-xua-4-chuyentactical.com_.jpg"
-              title="green iguana"
-            />
-            <CardContent sx={{
-              padding: 1.5,
-              '&:last-child': {
-                padding: 1.5
-              }
-            }}>
-              <Typography>
-                Hung Dung
-              </Typography>
-            </CardContent>
-            <CardActions sx={{
-              padding: '0 4px 8px 4px'
-            }}>
-              <Button startIcon={<GroupIcon/>} size="small">20</Button>
-              <Button startIcon={<CommentIcon/>} size="small">17</Button>
-              <Button startIcon={<AttachmentIcon/>} size="small">8</Button>
-            </CardActions>
-          </Card>
-          <Card sx={{
-            cursor: 'pointer'
-          }}>
-            <CardContent sx={{
-              padding: 1.5,
-              '&:last-child': {
-                padding: 1.5
-              }
-            }}>
-              <Typography>
-                Lizard
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
+            <Typography variant="h6" sx={{
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}>Column title</Typography>
+            <Box>
+              <Tooltip title='More options'>
+                <ExpandMoreIcon
+                  sx={{ color: 'text.primary', cursor: 'pointer' }}
+                  id="basic-button-workspaces"
+                  aria-controls={open ? 'basic-menu-workspaces' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                  endicon={<ArrowDropDownIcon/>}
+                ></ExpandMoreIcon>
+              </Tooltip>
+              <Menu
+                id="basic-menu-workspaces"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button-workspaces'
+                }}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCut fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Cut</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopy fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Copy</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentPaste fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Paste</ListItemText>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <ListItemIcon><DeleteIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText>Remove this column</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon><Cloud fontSize="small" /></ListItemIcon>
+                  <ListItemText>Archive this column</ListItemText>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
 
-        <Box sx={{
-          height: COLUMN_FOOTER_HEIGHT,
-          padding: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
-          <Button startIcon={<AddCardRounded/>}>Add new cards</Button>
-          <Tooltip title='Drag to move'>
-            <DragHandleIcon/>
-          </Tooltip>
+          <Box sx={{
+            padding: '0 5px',
+            margin: '0 5px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            maxHeight: (theme) => (`calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)} - ${COLUMN_HEADER_HEIGHT} - ${COLUMN_FOOTER_HEIGHT})`),
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#bdc0ca',
+              borderRadius: '5px'
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#aaaaaa'
+            }
+          }}>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgb(0, 0, 0, 0.3)',
+              overflow: 'unset'
+            }}>
+              <CardMedia
+                sx={{ height: 140 }}
+                image="https://chuyentactical.com/wp-content/uploads/2023/09/kinh-nghiem-du-lich-ta-xua-4-chuyentactical.com_.jpg"
+                title="green iguana"
+              />
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Hung Dung
+                </Typography>
+              </CardContent>
+              <CardActions sx={{
+                padding: '0 4px 8px 4px'
+              }}>
+                <Button startIcon={<GroupIcon/>} size="small">20</Button>
+                <Button startIcon={<CommentIcon/>} size="small">17</Button>
+                <Button startIcon={<AttachmentIcon/>} size="small">8</Button>
+              </CardActions>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{
+                padding: 1.5,
+                '&:last-child': {
+                  padding: 1.5
+                }
+              }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+
+          <Box sx={{
+            height: COLUMN_FOOTER_HEIGHT,
+            padding: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Button startIcon={<AddCardRounded/>}>Add new cards</Button>
+            <Tooltip title='Drag to move'>
+              <DragHandleIcon/>
+            </Tooltip>
+          </Box>
         </Box>
       </Box>
     </Box>
