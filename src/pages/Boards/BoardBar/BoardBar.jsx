@@ -8,10 +8,11 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '../../../utils/formatters'
 
 const CHIP_STYLE = { color: 'white', border: 'none', bgcolor: 'transparent', padding: '5px', '.MuiSvgIcon-root': { color: 'white' }, borderRadius: '4px', '&:hover': { bgcolor: 'primary.50' } }
 
-export default function BoardBar() {
+export default function BoardBar({ board }) {
   return (
     <Box sx={{
       height: (theme) => theme.trello.boardBarHeight,
@@ -28,13 +29,13 @@ export default function BoardBar() {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Chip
           icon={<DashboardOutlined color='primary.main'/>}
-          label="It's me again I'm back"
+          label={board?.title}
           clickable
           sx={ CHIP_STYLE }
         ></Chip>
         <Chip
           icon={<VpnLockIcon color='primary.main'/>}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable
           sx={ CHIP_STYLE }
         ></Chip>

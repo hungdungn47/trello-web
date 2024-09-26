@@ -7,38 +7,22 @@ import CommentIcon from '@mui/icons-material/Comment'
 import AttachmentIcon from '@mui/icons-material/Attachment'
 import { Button, Typography } from '@mui/material'
 
-export default function TrelloCard({ temporaryHideMedia }) {
-  if (temporaryHideMedia) {
-    return (
-      <Card sx={{
-        cursor: 'pointer',
-        boxShadow: '0 1px 1px rgb(0, 0, 0, 0.3)',
-        overflow: 'unset'
-      }}>
-        <CardContent sx={{
-          padding: 1.5,
-          '&:last-child': {
-            padding: 1.5
-          }
-        }}>
-          <Typography>
-            hehehehe
-          </Typography>
-        </CardContent>
-      </Card>
-    )
+export default function TrelloCard({ card }) {
+
+  const showCardActions = () => {
+    return !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
   }
+
   return (
     <Card sx={{
       cursor: 'pointer',
       boxShadow: '0 1px 1px rgb(0, 0, 0, 0.3)',
       overflow: 'unset'
     }}>
-      <CardMedia
+      {card?.cover && <CardMedia
         sx={{ height: 140 }}
-        image="https://chuyentactical.com/wp-content/uploads/2023/09/kinh-nghiem-du-lich-ta-xua-4-chuyentactical.com_.jpg"
-        title="green iguana"
-      />
+        image={card?.cover}
+      />}
       <CardContent sx={{
         padding: 1.5,
         '&:last-child': {
@@ -46,16 +30,17 @@ export default function TrelloCard({ temporaryHideMedia }) {
         }
       }}>
         <Typography>
-          Hung Dung
+          {card?.title}
         </Typography>
       </CardContent>
-      <CardActions sx={{
-        padding: '0 4px 8px 4px'
-      }}>
-        <Button startIcon={<GroupIcon/>} size="small">20</Button>
-        <Button startIcon={<CommentIcon/>} size="small">17</Button>
-        <Button startIcon={<AttachmentIcon/>} size="small">8</Button>
-      </CardActions>
+      {showCardActions() &&
+        <CardActions sx={{
+          padding: '0 4px 8px 4px'
+        }}>
+          {!!card?.memberIds?.length && <Button startIcon={<GroupIcon/>} size="small">{card?.memberIds?.length}</Button>}
+          {!!card?.comments?.length && <Button startIcon={<CommentIcon/>} size="small">{card?.comments?.length}</Button>}
+          {!!card?.attachments?.length && <Button startIcon={<AttachmentIcon/>} size="small">{card?.attachments?.length}</Button>}
+        </CardActions>}
     </Card>
   )
 }

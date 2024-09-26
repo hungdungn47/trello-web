@@ -14,8 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { AddCardRounded, ContentCopy, ContentPaste } from '@mui/icons-material'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
+import { sortArray } from '../../../../../utils/sorts'
 
-export default function Column() {
+export default function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -24,6 +25,9 @@ export default function Column() {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const orderedCards = sortArray(column?.cards, column?.cardOrderIds, '_id')
+
   return (
     <Box sx={{
       width: '300px',
@@ -44,7 +48,7 @@ export default function Column() {
           fontSize: '1rem',
           fontWeight: 'bold',
           cursor: 'pointer'
-        }}>Column title</Typography>
+        }}>{column?.title}</Typography>
         <Box>
           <Tooltip title='More options'>
             <ExpandMoreIcon
@@ -97,7 +101,7 @@ export default function Column() {
         </Box>
       </Box>
 
-      <ListCards/>
+      <ListCards cards={orderedCards}/>
 
       <Box sx={{
         height: (theme) => (theme.trello.columnFooterHeight),
