@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box'
 import ListColumns from './ListColumns/ListColumns'
 import { sortArray } from '../../../utils/sorts'
-import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core'
-import { useEffect, useState } from 'react'
+import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, rectIntersection, pointerWithin, closestCorners, getFirstCollision, closestCenter } from '@dnd-kit/core'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 import Column from './ListColumns/Column/Column'
 import TrelloCard from './ListColumns/Column/ListCards/Card/Card'
@@ -24,6 +24,8 @@ export default function BoardContent({ board }) {
   const [oldColumnOfCard, setOldColumnOfCard] = useState(null)
 
   const [orderedColumns, setOrderedColumns] = useState([])
+
+  const lastOverId = useRef(null)
 
   useEffect(() => {
     setOrderedColumns(sortArray(board?.columns, board?.columnOrderIds, '_id'))
@@ -184,8 +186,39 @@ export default function BoardContent({ board }) {
     })
   }
 
+  const collisionDetectionStrategy = useCallback((args) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      return closestCorners({ ...args })
+    }
+
+    const pointerIntersections = pointerWithin(args)
+
+    const intersections = pointerIntersections?.length > 0 ? pointerIntersections : rectIntersection(args)
+
+    let overId = getFirstCollision(intersections, 'id')
+
+    if (overId) {
+
+      const checkColumn = orderedColumns.find(column => column._id === overId)
+      if (checkColumn) {
+        overId = closestCenter({
+          ...args,
+          droppableContainers: args.droppableContainers.filter(container => {
+            return container.id !== overId && checkColumn?.cardOrderIds?.includes(container.id)
+          })
+        })[0]?.id
+      }
+
+      lastOverId.current = overId
+      return [
+        { id: overId }
+      ]
+    }
+    return lastOverId.current ? [{ id: lastOverId.current }] : []
+  }, [activeDragItemType, orderedColumns])
+
   return (
-    <DndContext collisionDetection={closestCorners} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd} sensors={sensors}>
+    <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd} collisionDetection={collisionDetectionStrategy} sensors={sensors}>
       <Box sx={{
         height: (theme) => (theme.trello.boardContentHeight),
         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'),
