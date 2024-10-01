@@ -39,7 +39,8 @@ export default function TrelloCard({ card }) {
       sx={{
         cursor: 'pointer',
         boxShadow: '0 1px 1px rgb(0, 0, 0, 0.3)',
-        overflow: 'unset'
+        overflow: 'unset',
+        display: card?.FE_PlaceholderCard ? 'none' : 'block'
       }}>
       {card?.cover && <CardMedia
         sx={{ height: 140 }}
