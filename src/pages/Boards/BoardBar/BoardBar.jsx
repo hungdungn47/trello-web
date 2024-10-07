@@ -27,12 +27,14 @@ export default function BoardBar({ board }) {
       '&::-webkit-scrollbar-track': { m: 2 }
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Chip
-          icon={<DashboardOutlined color='primary.main'/>}
-          label={board?.title}
-          clickable
-          sx={ CHIP_STYLE }
-        ></Chip>
+        <Tooltip title={board?.description}>
+          <Chip
+            icon={<DashboardOutlined color='primary.main'/>}
+            label={board?.title}
+            clickable
+            sx={ CHIP_STYLE }
+          ></Chip>
+        </Tooltip>
         <Chip
           icon={<VpnLockIcon color='primary.main'/>}
           label={capitalizeFirstLetter(board?.type)}
