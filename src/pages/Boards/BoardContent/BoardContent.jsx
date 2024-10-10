@@ -14,7 +14,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardsInSameColumn }) {
+export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardsInSameColumn, moveCardToDifferentColumn }) {
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 500 } })
   const sensors = useSensors(mouseSensor, touchSensor)
@@ -43,7 +43,8 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumns(prevColumns => {
       const overCardIndex = overColumn?.cards?.findIndex(card => card._id === overCardId)
@@ -74,6 +75,10 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
         nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
+      }
+
+      if (triggerFrom === 'handleDragEnd') {
+        moveCardToDifferentColumn(activeDraggingCardId, oldColumnOfCard._id, nextOverColumn._id, nextColumns)
       }
       return nextColumns
     })
@@ -118,7 +123,8 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        'handleDragOver'
       )
     }
   }
@@ -149,7 +155,8 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          'handleDragEnd'
         )
       } else {
         const oldCardIndex = activeColumn?.cards?.findIndex(c => c._id === activeDragItemId)
