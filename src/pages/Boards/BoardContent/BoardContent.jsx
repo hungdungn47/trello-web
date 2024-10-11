@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box'
 import ListColumns from './ListColumns/ListColumns'
-import { sortArray } from '../../../utils/sorts'
 import { DndContext, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, pointerWithin, closestCorners, getFirstCollision, closestCenter } from '@dnd-kit/core'
 import { MouseSensor, TouchSensor } from '~/customLibs/DndKitSensors'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -15,7 +14,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
+export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardsInSameColumn }) {
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 500 } })
   const sensors = useSensors(mouseSensor, touchSensor)
@@ -30,7 +29,7 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
   const lastOverId = useRef(null)
 
   useEffect(() => {
-    setOrderedColumns(sortArray(board?.columns, board?.columnOrderIds, '_id'))
+    setOrderedColumns(board?.columns)
   }, [board])
 
   const findColumnByCardId = (cardId) => {
@@ -156,15 +155,17 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         const oldCardIndex = activeColumn?.cards?.findIndex(c => c._id === activeDragItemId)
         const newCardIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
         const dndOrderedCards = arrayMove(activeColumn?.cards, oldCardIndex, newCardIndex)
-
+        const dndOrderedCardIds = dndOrderedCards.map(c => c._id)
         setOrderedColumns(prevColumns => {
           const nextColumns = cloneDeep(prevColumns)
           const targetColumn = nextColumns.find(column => column._id === activeColumn._id)
 
           targetColumn.cards = dndOrderedCards
-          targetColumn.cardOrderIds = dndOrderedCards.map(c => c._id)
+          targetColumn.cardOrderIds = dndOrderedCardIds
           return nextColumns
         })
+
+        moveCardsInSameColumn(dndOrderedCards, dndOrderedCardIds, oldColumnOfCard._id)
       }
     }
 
@@ -173,8 +174,10 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         const oldIndex = orderedColumns.findIndex(c => c._id === active.id)
         const newIndex = orderedColumns.findIndex(c => c._id === over.id)
         const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex)
-        moveColumns(dndOrderedColumns)
+
         setOrderedColumns(dndOrderedColumns)
+
+        moveColumns(dndOrderedColumns)
       }
     }
     setActiveDragItemId(null)

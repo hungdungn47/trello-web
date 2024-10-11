@@ -14,7 +14,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { AddCardRounded, ContentCopy, ContentPaste } from '@mui/icons-material'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
-import { sortArray } from '../../../../../utils/sorts'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import TextField from '@mui/material/TextField'
@@ -47,7 +46,7 @@ export default function Column({ column, createNewCard }) {
     setAnchorEl(null)
   }
 
-  const orderedCards = sortArray(column?.cards, column?.cardOrderIds, '_id')
+  const orderedCards = column?.cards
 
   const [openNewCardForm, setOpenNewCardForm] = useState(false)
   const [newCardTitle, setNewCardTitle] = useState('')
