@@ -13,7 +13,7 @@ const Board = () => {
   const [board, setBoard] = useState(null)
 
   useEffect(() => {
-    const boardId = '67053dc01bdcca1640656f28'
+    const boardId = '670901d62903edebcb188b99'
     fetchBoardDetailsAPI(boardId).then((board) => {
 
       board.columns = sortArray(board?.columns, board?.columnOrderIds, '_id')
