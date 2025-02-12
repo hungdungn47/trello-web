@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from 'axios'
 import { API_ROOT } from '~/utils/constants'
+import { sortArray } from '~/utils/sorts'
+import { isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/utils/formatters'
 
 const initialState = {
   currentActiveBoard: null
@@ -21,12 +24,26 @@ export const activeBoardSlice = createSlice({
     updateCurrentActiveBoard: (state, action) => {
       const board = action.payload
 
-      state.currentActiveBoard = fullBoard
+      state.currentActiveBoard = board
     }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBoardDetailsAPI.fulfilled, (state, action) => {
-      const board = action.payload
+      // action.payload here is response.data on the function calling API above
+      let board = action.payload
+
+      board.columns = sortArray(board?.columns, board?.columnOrderIds, '_id')
+      
+      board.columns.forEach(column => {
+        if (isEmpty(column.cards)) {
+          column.cards = [generatePlaceholderCard(column)]
+          column.cardOrderIds = [generatePlaceholderCard(column)._id]
+        } else {
+          column.cards = sortArray(column?.cards, column?.cardOrderIds, '_id')
+        }
+      })
+
+      state.currentActiveBoard = board
     })
   }
 })
