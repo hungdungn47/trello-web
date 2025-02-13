@@ -21,8 +21,13 @@ import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 import AddCardIcon from '@mui/icons-material/AddCard'
 import { useConfirm } from 'material-ui-confirm'
+import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { generatePlaceholderCard } from '~/utils/formatters'
+import { cloneDeep } from 'lodash'
 
-export default function Column({ column, createNewCard, deleteColumnDetails }) {
+export default function Column({ column }) {
   const {
     attributes,
     listeners,
@@ -38,6 +43,9 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
     height: '100%',
     opacity: isDragging ? 0.5 : undefined
   }
+
+  const board = useSelector(selectCurrentActiveBoard)
+  const dispatch = useDispatch()
 
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -63,7 +71,23 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
       columnId: column._id
     }
 
-    await createNewCard(newCardData)
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id
+    })
+    // const newBoard = { ...board }
+    const newBoard = cloneDeep(board)
+    const columnToUpdate = newBoard.columns.find(column => column._id === createdCard.columnId)
+    if (columnToUpdate) {
+      if (columnToUpdate.cards.some(card => card.FE_PlaceholderCard)) {
+        columnToUpdate.cards = [createdCard]
+        columnToUpdate.cardOrderIds = [createdCard._id]
+      } else {
+        columnToUpdate.cards.push(createdCard)
+        columnToUpdate.cardOrderIds.push(createdCard._id)
+      }
+    }
+    dispatch(updateCurrentActiveBoard(newBoard))
     setOpenNewCardForm(!openNewCardForm)
     setNewCardTitle('')
   }
@@ -88,8 +112,14 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
         color: 'inherit'
       }
     }).then(() => {
-      deleteColumnDetails(column._id)
-    }).catch(() => {})
+      const newBoard = { ...board }
+      newBoard.columns = newBoard.columns.filter(c => c._id !== column._id)
+      newBoard.columnOrderIds = newBoard.columnOrderIds.filter(id => id !== column._id)
+      dispatch(updateCurrentActiveBoard(newBoard))
+      deleteColumnDetailsAPI(column._id).then(res => {
+        toast.success(res?.deleteResult)
+      })
+    }).catch(() => { })
   }
 
   return (
@@ -128,7 +158,7 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
-                endicon={<ArrowDropDownIcon/>}
+                endicon={<ArrowDropDownIcon />}
               ></ExpandMoreIcon>
             </Tooltip>
             <Menu
@@ -152,7 +182,7 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
                   }
                 }}>
                 <ListItemIcon>
-                  <AddCardIcon className='add-card-icon' fontSize="small"/>
+                  <AddCardIcon className='add-card-icon' fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Add new card</ListItemText>
               </MenuItem>
@@ -196,7 +226,7 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
           </Box>
         </Box>
 
-        <ListCards cards={orderedCards}/>
+        <ListCards cards={orderedCards} />
 
         <Box sx={{
           height: (theme) => (theme.trello.columnFooterHeight),
@@ -209,9 +239,9 @@ export default function Column({ column, createNewCard, deleteColumnDetails }) {
               alignItems: 'center',
               justifyContent: 'space-between'
             }}>
-              <Button onClick={() => setOpenNewCardForm(!openNewCardForm)} startIcon={<AddCardRounded/>}>Add new card</Button>
+              <Button onClick={() => setOpenNewCardForm(!openNewCardForm)} startIcon={<AddCardRounded />}>Add new card</Button>
               <Tooltip title='Drag to move'>
-                <DragHandleIcon/>
+                <DragHandleIcon />
               </Tooltip>
             </Box>
             : <Box sx={{
