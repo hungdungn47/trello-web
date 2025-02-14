@@ -5,4 +5,5 @@ export const store = configureStore({
   reducer: {
     activeBoard: activeBoardReducer
   },
+  devTools: true
 });

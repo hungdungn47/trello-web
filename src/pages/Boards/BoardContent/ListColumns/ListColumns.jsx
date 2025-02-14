@@ -6,10 +6,18 @@ import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
+import { createNewColumnAPI } from '~/apis'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { generatePlaceholderCard } from '~/utils/formatters'
+import { cloneDeep } from 'lodash'
 
-export default function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDetails }) {
+export default function ListColumns({ columns }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const [newColumnTitle, setNewColumnTitle] = useState('')
+
+  const board = useSelector(selectCurrentActiveBoard)
+  const dispatch = useDispatch()
 
   const addNewColumn = async () => {
     if (!newColumnTitle) {
@@ -19,7 +27,21 @@ export default function ListColumns({ columns, createNewColumn, createNewCard, d
     const newColumnData = {
       title: newColumnTitle
     }
-    await createNewColumn(newColumnData)
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
+
+    // Use deep copy instead of shallow copy to avoid Immutability rule of redux
+    // const newBoard = { ...board }
+    const newBoard = cloneDeep(board)
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+
+    // dispatch(updateCurrentActiveBoard(newBoard))
+    dispatch(updateCurrentActiveBoard(newBoard))
     setOpenNewColumnForm(!openNewColumnForm)
     setNewColumnTitle('')
   }
@@ -35,7 +57,7 @@ export default function ListColumns({ columns, createNewColumn, createNewCard, d
         overflowY: 'hidden',
         '&::-webkit-scrollbar-track': { m: 2 }
       }}>
-        {columns?.map((column) => <Column deleteColumnDetails={deleteColumnDetails} key={column._id} column={column} createNewCard={createNewCard}/>)}
+        {columns?.map((column) => <Column key={column._id} column={column} />)}
 
         {!openNewColumnForm
           ? <Box
@@ -49,7 +71,7 @@ export default function ListColumns({ columns, createNewColumn, createNewCard, d
               bgcolor: '#ffffff3d'
             }}>
             <Button
-              startIcon={<NoteAddIcon/>}
+              startIcon={<NoteAddIcon />}
               sx={{
                 color: 'white',
                 width: '100%',

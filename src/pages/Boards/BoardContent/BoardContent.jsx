@@ -14,7 +14,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardsInSameColumn, moveCardToDifferentColumn, deleteColumnDetails }) {
+export default function BoardContent({ board, moveColumns, moveCardsInSameColumn, moveCardToDifferentColumn }) {
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 500 } })
   const sensors = useSensors(mouseSensor, touchSensor)
@@ -241,11 +241,11 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'),
         padding: '10px 0'
       }}>
-        <ListColumns deleteColumnDetails={deleteColumnDetails} columns={orderedColumns} createNewColumn={createNewColumn} createNewCard={createNewCard}/>
+        <ListColumns columns={orderedColumns} />
         <DragOverlay dropAnimation={dropAnimation} >
           {(!activeDragItemType) && null}
-          {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData}/>}
-          {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) && <TrelloCard card={activeDragItemData}/>}
+          {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData} />}
+          {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) && <TrelloCard card={activeDragItemData} />}
         </DragOverlay>
       </Box>
     </DndContext>
