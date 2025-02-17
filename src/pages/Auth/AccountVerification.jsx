@@ -11,6 +11,8 @@ export default function AccountVerification() {
   const [verified, setVerified] = useState(false)
 
   useEffect(() => {
+    console.log(email, token)
+
     if (email && token) {
       verifyUserAPI({ email, token }).then(res => {
         setVerified(true)
@@ -22,7 +24,7 @@ export default function AccountVerification() {
     return <Navigate to='/404' />
   }
 
-  if (verified) {
+  if (!verified) {
     return <LoadingSpinner caption='Verifying your account...' />
   }
   return <Navigate to={`/login?verifiedEmail=${email}`} />
