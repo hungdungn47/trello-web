@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { interceptorLoadingElements } from '~/utils/formatters'
+import { logoutUserAPI } from '../redux/user/userSlice'
+import { refreshTokenAPI } from '../apis'
 
 let authorizedAxiosInstance = axios.create()
 
@@ -18,14 +20,28 @@ authorizedAxiosInstance.interceptors.request.use((config) => {
   return Promise.reject(error)
 })
 
+let axiosStore
+export const injectStore = (mainStore) => {
+  axiosStore = mainStore
+}
+
 authorizedAxiosInstance.interceptors.response.use((response) => {
 
   interceptorLoadingElements(false)
 
   return response
-}, (error) => {
-
+}, async (error) => {
   interceptorLoadingElements(false)
+
+  if (error.response?.status === 401) {
+    axiosStore.dispatch(logoutUserAPI(false))
+  }
+  const originalRequest = error.config
+  if (error.response?.status === 410 && !originalRequest._retry) {
+    originalRequest._retry = true
+    await refreshTokenAPI()
+    return authorizedAxiosInstance(originalRequest)
+  }
 
   let errorMessage = error?.message
   if (error.response?.data?.message) {

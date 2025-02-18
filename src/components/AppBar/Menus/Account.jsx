@@ -10,7 +10,10 @@ import Tooltip from '@mui/material/Tooltip'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
-import avatar from '~/assets/GapMatSHHV.jpg'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectCurrentUser } from '~/redux/user/userSlice'
+import { useConfirm } from 'material-ui-confirm'
+import { logoutUserAPI } from '~/redux/user/userSlice'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -20,6 +23,30 @@ export default function AccountMenu() {
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const dispatch = useDispatch()
+  const currentUser = useSelector(selectCurrentUser)
+  const confirmLogout = useConfirm()
+  const handleLogout = () => {
+    confirmLogout({
+      title: 'Do you want to log out?',
+      confirmationText: 'Yes',
+      cancellationText: 'Cancel',
+      dialogProps: {
+        maxWidth: 'xs'
+      },
+      allowClose: false,
+      confirmationButtonProps: {
+        color: 'secondary',
+        variant: 'outlined'
+      },
+      cancellationButtonProps: {
+        color: 'inherit'
+      }
+    }).then(() => {
+      dispatch(logoutUserAPI())
+    }).catch(() => { })
   }
   return (
     <React.Fragment>
@@ -32,7 +59,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar src={avatar} sx={{ width: 30, height: 30 }}>
+            <Avatar src={currentUser?.avatar} sx={{ width: 30, height: 30 }}>
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -74,28 +101,38 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+        <MenuItem sx={{
+          '&:hover': {
+            color: 'success.light'
+          }
+        }}>
+          <Avatar src={currentUser?.avatar} sx={{ height: 28, width: 28, marginRight: 2 }} /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Add another account
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem sx={{
+          '&:hover': {
+            color: 'warning.dark',
+            '& .logout-icon': {
+              color: 'warning.dark'
+            }
+          }
+        }}
+          onClick={handleLogout}
+        >
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout className='logout-icon' fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
