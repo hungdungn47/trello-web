@@ -12,7 +12,6 @@ export default function AccountVerification() {
   const [verified, setVerified] = useState(false)
 
   useEffect(() => {
-    console.log(email, token)
 
     if (email && token) {
       verifyUserAPI({ email, token }).then(res => {
