@@ -8,6 +8,7 @@ import { fetchBoardDetailsAPI, updateCurrentActiveBoard, selectCurrentActiveBoar
 import { useDispatch, useSelector } from 'react-redux'
 import { cloneDeep } from 'lodash'
 import { useParams } from 'react-router-dom'
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
 
 const Board = () => {
   const dispatch = useDispatch();
@@ -68,19 +69,7 @@ const Board = () => {
   }
 
   if (!board) {
-    return (
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        width: '100vw',
-        gap: 2
-      }}>
-        <CircularProgress />
-        <Typography>Loading board...</Typography>
-      </Box>
-    )
+    return <LoadingSpinner caption='Loading board...' />
   }
 
   return (
