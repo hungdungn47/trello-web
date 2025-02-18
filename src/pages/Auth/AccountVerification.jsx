@@ -4,6 +4,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner"
 import { verifyUserAPI } from "../../apis"
 
 export default function AccountVerification() {
+
   let [searchParams] = useSearchParams()
   const email = searchParams.get('email')
   const token = searchParams.get('token')
