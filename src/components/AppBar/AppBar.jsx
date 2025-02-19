@@ -17,6 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function AppBar() {
   const [searchString, setSearchString] = useState('')
@@ -31,17 +32,19 @@ export default function AppBar() {
       '&::-webkit-scrollbar-track': { m: 2 }
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <AppsIcon sx={{ color: 'white' }}/>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <img src={trelloLogo} style={{ borderRadius: '4px', height: '24px' }} />
-          <Typography variant='span' sx={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }}>Trello</Typography>
-        </Box>
+        <AppsIcon sx={{ color: 'white' }} />
+        <Link to='/'>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <img src={trelloLogo} style={{ borderRadius: '4px', height: '24px' }} />
+            <Typography variant='span' sx={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }}>Trello</Typography>
+          </Box>
+        </Link>
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-          <Workspaces/>
-          <Recent/>
-          <Starred/>
-          <Templates/>
-          <Button startIcon={<LibraryAddIcon/>} sx={{ color: 'white', border: 'none', '&:hover': { border: 'none' } }} variant='outlined'>Create</Button>
+          <Workspaces />
+          <Recent />
+          <Starred />
+          <Templates />
+          <Button startIcon={<LibraryAddIcon />} sx={{ color: 'white', border: 'none', '&:hover': { border: 'none' } }} variant='outlined'>Create</Button>
         </Box>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -55,11 +58,11 @@ export default function AppBar() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ color: 'white' }} fontSize='small'/>
+                <SearchIcon sx={{ color: 'white' }} fontSize='small' />
               </InputAdornment>
             ),
             endAdornment: (
-              <CloseIcon fontSize='small' sx={{ color: searchString ? 'white' : 'transparent', cursor: 'pointer' }} onClick={() => setSearchString('')}/>
+              <CloseIcon fontSize='small' sx={{ color: searchString ? 'white' : 'transparent', cursor: 'pointer' }} onClick={() => setSearchString('')} />
             )
           }}
           sx={{
@@ -86,7 +89,7 @@ export default function AppBar() {
             }
           }}
         />
-        <ModeSelect/>
+        <ModeSelect />
         <Tooltip title="Notifications">
           <Badge color="warning" variant="dot" sx={{ cursor: 'pointer' }} >
             <NotificationsIcon sx={{ color: 'white' }} />
@@ -95,7 +98,7 @@ export default function AppBar() {
         <Tooltip title="Help">
           <HelpOutlineIcon sx={{ color: 'white' }} />
         </Tooltip>
-        <Account/>
+        <Account />
       </Box>
     </Box>
   )

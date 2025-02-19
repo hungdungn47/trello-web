@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useConfirm } from 'material-ui-confirm'
 import { logoutUserAPI } from '~/redux/user/userSlice'
+import { Link } from 'react-router-dom'
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -101,13 +102,16 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem sx={{
-          '&:hover': {
-            color: 'success.light'
-          }
-        }}>
-          <Avatar src={currentUser?.avatar} sx={{ height: 28, width: 28, marginRight: 2 }} /> Profile
-        </MenuItem>
+        <Link to='/settings/account' style={{ color: 'inherit', textDecoration: 'none' }}>
+          <MenuItem sx={{
+            '&:hover': {
+              color: 'success.light'
+            }
+          }}>
+            <Avatar src={currentUser?.avatar} sx={{ height: 28, width: 28, marginRight: 2 }} /> Profile
+          </MenuItem>
+        </Link>
+
         <Divider />
         <MenuItem>
           <ListItemIcon>
