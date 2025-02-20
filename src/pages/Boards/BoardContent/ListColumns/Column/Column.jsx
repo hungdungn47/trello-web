@@ -26,6 +26,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { generatePlaceholderCard } from '~/utils/formatters'
 import { cloneDeep } from 'lodash'
+import ToggleFocusInput from '~/components/Form/ToggleFocusInput'
+import { updateColumnDetailsAPI } from '~/apis'
 
 export default function Column({ column }) {
   const {
@@ -122,6 +124,17 @@ export default function Column({ column }) {
     }).catch(() => { })
   }
 
+  const onUpdateColumnTitle = (newTitle) => {
+    updateColumnDetailsAPI(column._id, { title: newTitle }).then(() => {
+      const newBoard = cloneDeep(board)
+      const columnToUpdate = newBoard.columns.find(c => c._id === column._id)
+      if (columnToUpdate) {
+        columnToUpdate.title = newTitle
+      }
+      dispatch(updateCurrentActiveBoard(newBoard))
+    })
+  }
+
   return (
     <div ref={setNodeRef}
       style={dndKitColumnStyle}
@@ -144,11 +157,16 @@ export default function Column({ column }) {
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          <Typography variant="h6" sx={{
+          {/* <Typography variant="h6" sx={{
             fontSize: '1rem',
             fontWeight: 'bold',
             cursor: 'pointer'
-          }}>{column?.title}</Typography>
+          }}>{column?.title}</Typography> */}
+          <ToggleFocusInput
+            value={column?.title}
+            onChangedValue={onUpdateColumnTitle}
+            data-no-dnd='true'
+          />
           <Box>
             <Tooltip title='More options'>
               <ExpandMoreIcon
