@@ -7,8 +7,20 @@ export default defineConfig({
   define: {
     'process.env': process.env
   },
+  optimizeDeps: {
+    include: [
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/material/Tooltip'
+    ],
+  },
   plugins: [
-    react(),
+    react({
+      jsxImportSource: '@emotion/react',
+      babel: {
+        plugins: ['@emotion/babel-plugin'],
+      },
+    }),
     svgr({
       svgrOptions: {
         // svgr options

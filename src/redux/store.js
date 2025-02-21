@@ -14,6 +14,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
+import { activeCardReducer } from "./activeCard/activeCardSlice"
 
 const rootPersistConfig = {
   key: 'root',
@@ -23,6 +24,7 @@ const rootPersistConfig = {
 
 const reducers = combineReducers({
   activeBoard: activeBoardReducer,
+  activeCard: activeCardReducer,
   user: userReducer
 })
 

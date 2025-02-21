@@ -8,6 +8,8 @@ import AttachmentIcon from '@mui/icons-material/Attachment'
 import { Button, Typography } from '@mui/material'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { useDispatch } from 'react-redux'
+import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 export default function TrelloCard({ card }) {
 
@@ -20,6 +22,8 @@ export default function TrelloCard({ card }) {
     isDragging
   } = useSortable({ id: card._id, data: { ...card } })
 
+  const dispatch = useDispatch()
+
   const dndKitCardStyle = {
     transform: CSS.Translate.toString(transform),
     transition,
@@ -30,8 +34,13 @@ export default function TrelloCard({ card }) {
     return !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length
   }
 
+  const setActiveCard = () => {
+    dispatch(updateCurrentActiveCard(card))
+  }
+
   return (
     <Card
+      onClick={setActiveCard}
       ref={setNodeRef}
       style={dndKitCardStyle}
       {...attributes}
@@ -62,9 +71,9 @@ export default function TrelloCard({ card }) {
         <CardActions sx={{
           padding: '0 4px 8px 4px'
         }}>
-          {!!card?.memberIds?.length && <Button startIcon={<GroupIcon/>} size="small">{card?.memberIds?.length}</Button>}
-          {!!card?.comments?.length && <Button startIcon={<CommentIcon/>} size="small">{card?.comments?.length}</Button>}
-          {!!card?.attachments?.length && <Button startIcon={<AttachmentIcon/>} size="small">{card?.attachments?.length}</Button>}
+          {!!card?.memberIds?.length && <Button startIcon={<GroupIcon />} size="small">{card?.memberIds?.length}</Button>}
+          {!!card?.comments?.length && <Button startIcon={<CommentIcon />} size="small">{card?.comments?.length}</Button>}
+          {!!card?.attachments?.length && <Button startIcon={<AttachmentIcon />} size="small">{card?.attachments?.length}</Button>}
         </CardActions>}
     </Card>
   )
