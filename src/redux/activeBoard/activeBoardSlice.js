@@ -44,6 +44,8 @@ export const activeBoardSlice = createSlice({
       // action.payload here is response.data on the function calling API above
       let board = action.payload
 
+      board.FE_allUsers = board.owners.concat(board.members)
+
       board.columns = sortArray(board?.columns, board?.columnOrderIds, '_id')
 
       board.columns.forEach(column => {

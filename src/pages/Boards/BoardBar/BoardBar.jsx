@@ -1,13 +1,10 @@
-import { Box, Button, Tooltip } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 import Chip from '@mui/material/Chip'
 import { DashboardOutlined } from '@mui/icons-material'
 import VpnLockIcon from '@mui/icons-material/VpnLock'
 import AddToDriveIcon from '@mui/icons-material/AddToDrive'
 import BoltIcon from '@mui/icons-material/Bolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import Avatar from '@mui/material/Avatar'
-import AvatarGroup from '@mui/material/AvatarGroup'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { capitalizeFirstLetter } from '../../../utils/formatters'
 import BoardUserGroup from './BoardUserGroup'
 
@@ -67,7 +64,7 @@ export default function BoardBar({ board }) {
         
       </Box> */}
 
-      <BoardUserGroup />
+      <BoardUserGroup boardUsers={board?.FE_allUsers} />
     </Box>
   )
 }
