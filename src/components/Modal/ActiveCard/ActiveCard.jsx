@@ -39,6 +39,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 import { selectCurrentActiveCard, updateCurrentActiveCard } from '../../../redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '../../../apis'
+import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -77,12 +78,17 @@ function ActiveCard() {
     const updatedCard = await updateCardDetailsAPI(activeCard._id, updateData)
     dispatch(updateCurrentActiveCard(updatedCard))
     // TODO: update card in active board
+    dispatch(updateCardInBoard(updatedCard))
     return updatedCard
   }
 
   const onUpdateCardTitle = (newTitle) => {
     // Gọi API...
     callUpdateCardAPI({ title: newTitle.trim() })
+  }
+
+  const onUpdateCardDescription = (newDescription) => {
+    callUpdateCardAPI({ description: newDescription })
   }
 
   const onUploadCardCover = (event) => {
@@ -96,6 +102,10 @@ function ActiveCard() {
     reqData.append('cardCover', event.target?.files[0])
 
     // Gọi API...
+    toast.promise(
+      callUpdateCardAPI(reqData).finally(() => event.target.value = ''),
+      { pending: 'Updating...' }
+    )
 
   }
 
@@ -163,7 +173,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor />
+              <CardDescriptionMdEditor
+                cardDescriptionProp={activeCard?.description}
+                handleUpdateCardDescription={onUpdateCardDescription}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>
