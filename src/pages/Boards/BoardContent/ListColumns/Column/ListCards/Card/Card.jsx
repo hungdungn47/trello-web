@@ -10,6 +10,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useDispatch } from 'react-redux'
 import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { showModalActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 export default function TrelloCard({ card }) {
 
@@ -36,6 +37,7 @@ export default function TrelloCard({ card }) {
 
   const setActiveCard = () => {
     dispatch(updateCurrentActiveCard(card))
+    dispatch(showModalActiveCard())
   }
 
   return (

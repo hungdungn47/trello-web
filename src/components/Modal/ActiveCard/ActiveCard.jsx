@@ -36,8 +36,8 @@ import CardActivitySection from './CardActivitySection'
 
 import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
-import { selectCurrentActiveCard, updateCurrentActiveCard } from '../../../redux/activeCard/activeCardSlice'
+import { clearAndHideCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { selectCurrentActiveCard, selectIsShowModalActiveCard, updateCurrentActiveCard } from '../../../redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '../../../apis'
 import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 
@@ -70,8 +70,9 @@ function ActiveCard() {
   const dispatch = useDispatch()
 
   const activeCard = useSelector(selectCurrentActiveCard)
+  const isShowModalActiveCard = useSelector(selectIsShowModalActiveCard)
   const handleCloseModal = () => {
-    dispatch(clearCurrentActiveCard())
+    dispatch(clearAndHideCurrentActiveCard())
   }
 
   const callUpdateCardAPI = async (updateData) => {
@@ -112,7 +113,7 @@ function ActiveCard() {
   return (
     <Modal
       disableScrollLock
-      open={true}
+      open={isShowModalActiveCard}
       onClose={handleCloseModal} // Sử dụng onClose trong trường hợp muốn đóng Modal bằng nút ESC hoặc click ra ngoài Modal
       sx={{ overflowY: 'auto' }}>
       <Box sx={{
