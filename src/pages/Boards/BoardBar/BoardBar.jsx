@@ -7,6 +7,7 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { capitalizeFirstLetter } from '../../../utils/formatters'
 import BoardUserGroup from './BoardUserGroup'
+import InviteBoardUser from './InviteBoardUser'
 
 const CHIP_STYLE = { color: 'white', border: 'none', bgcolor: 'transparent', padding: '5px', '.MuiSvgIcon-root': { color: 'white' }, borderRadius: '4px', '&:hover': { bgcolor: 'primary.50' } }
 
@@ -59,12 +60,10 @@ export default function BoardBar({ board }) {
         ></Chip>
       </Box>
 
-      {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Button startIcon={<PersonAddIcon />} variant='outlined' sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' } }}>Invite</Button>
-        
-      </Box> */}
-
-      <BoardUserGroup boardUsers={board?.FE_allUsers} />
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <InviteBoardUser boardId={board?._id} />
+        <BoardUserGroup boardUsers={board?.FE_allUsers} />
+      </Box>
     </Box>
   )
 }
