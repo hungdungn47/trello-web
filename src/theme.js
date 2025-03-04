@@ -14,8 +14,6 @@ const theme = extendTheme({
     columnHeaderHeight: COLUMN_HEADER_HEIGHT,
     columnFooterHeight: COLUMN_FOOTER_HEIGHT
   },
-  colorSchemes: {
-  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
