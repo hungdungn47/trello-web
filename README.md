@@ -23,5 +23,4 @@ So if you are a recruiter seeing this project, you should not be worried about m
 
 ## Technology
 - Runtime: NodeJS
-- Framework: ExpressJS
-- Database: MongoDB
+- Library: ReactJS, MaterialUI
