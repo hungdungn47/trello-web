@@ -4,7 +4,7 @@ import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
 import CancelIcon from '@mui/icons-material/Cancel'
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack'
 import Divider from '@mui/material/Divider'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
@@ -163,7 +163,7 @@ function ActiveCard() {
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
           {/* Left side */}
-          <Grid xs={12} sm={9}>
+          <Grid item xs={12} sm={9}>
             <Box sx={{ mb: 3 }}>
               <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Members</Typography>
 
@@ -199,7 +199,7 @@ function ActiveCard() {
           </Grid>
 
           {/* Right side */}
-          <Grid xs={12} sm={3}>
+          <Grid item xs={12} sm={3}>
             <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Add To Card</Typography>
             <Stack direction="column" spacing={1}>
               {/* Feature 05: Xử lý hành động bản thân user tự join vào card */}
