@@ -19,6 +19,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Notifications from './Notifications/Notifications'
+import AutoCompleteSearchBoard from './SearchBoards/AutoCompleteSearchBoard'
 
 export default function AppBar() {
   const [searchString, setSearchString] = useState('')
@@ -54,47 +55,7 @@ export default function AppBar() {
         </Box>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <TextField
-          id="outlined-search"
-          label="Search..."
-          type="text"
-          size='small'
-          value={searchString}
-          onChange={(e) => setSearchString(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: 'white' }} fontSize='small' />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <CloseIcon fontSize='small' sx={{ color: searchString ? 'white' : 'transparent', cursor: 'pointer' }} onClick={() => setSearchString('')} />
-            )
-          }}
-          sx={{
-            minWidth: '120px',
-            '& label': {
-              color: 'white'
-            },
-            '& input': {
-              color: 'white'
-            },
-            '& label.Mui-focused': {
-              color: 'white'
-            },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'white'
-              },
-              '&:hover fieldset': {
-                borderColor: 'white'
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'white'
-              }
-            }
-          }}
-        />
+        <AutoCompleteSearchBoard />
         <ModeSelect />
         <Notifications />
         <Tooltip title="Help">

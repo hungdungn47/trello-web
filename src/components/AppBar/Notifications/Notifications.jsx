@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchInvitationsAPI, selectCurrentNotifications, addNotification } from '~/redux/notifications/notificationsSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { updateBoardInvitationAPI } from '~/redux/notifications/notificationsSlice'
-import { socketIoInstance } from '~/main'
+import { socketIoInstance } from '~/socketClient'
 import { useNavigate } from 'react-router-dom'
 
 const BOARD_INVITATION_STATUS = {
