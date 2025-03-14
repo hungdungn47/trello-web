@@ -9,6 +9,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import { createSearchParams, useNavigate } from 'react-router-dom'
+import { fetchBoardsAPI } from '~/apis'
+import { useDebounce } from '../../../customHooks/useDebounce'
 
 /**
  * Hướng dẫn & ví dụ cái Autocomplele của MUI ở đây:
@@ -40,13 +42,24 @@ function AutoCompleteSearchBoard() {
     console.log(searchPath)
 
     // Gọi API...
+    setLoading(true)
+    fetchBoardsAPI(searchPath)
+      .then((res) => {
+        setBoards(res.boards || [])
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
   // Làm useDebounceFn...
+  const debouncedSearch = useDebounce(handleInputSearchChange)
 
   // Khi chúng ta select chọn một cái board cụ thể thì sẽ điều hướng tới board đó luôn
   const handleSelectedBoard = (event, selectedBoard) => {
     // Phải kiểm tra nếu tồn tại một cái board cụ thể được select thì mới gọi điều hướng - navigate
-    console.log(selectedBoard)
+    if (selectedBoard) {
+      navigate(`/boards/${selectedBoard._id}`)
+    }
   }
 
   return (
@@ -75,7 +88,7 @@ function AutoCompleteSearchBoard() {
       loading={loading}
 
       // onInputChange sẽ chạy khi gõ nội dung vào thẻ input, cần làm debounce để tránh việc bị spam gọi API
-      onInputChange={handleInputSearchChange}
+      onInputChange={debouncedSearch}
 
       // onChange của cả cái Autocomplete sẽ chạy khi chúng ta select một cái kết quả (ở đây là board)
       onChange={handleSelectedBoard}
