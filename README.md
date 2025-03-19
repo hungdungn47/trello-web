@@ -1,26 +1,64 @@
-## Trello web clone - Frontend
-Trello is a tool that lets you organize ideas, concepts, to-dos, and anything else you like.
+# 📝 Trello Web Clone - Frontend  
 
-Imagine a white board, filled with lists of sticky notes, with each note as a task for you and your team. Now imagine that each of those sticky notes has photos, attachments from other data sources like Jira or Salesforce, documents, and a place to comment and collaborate with your teammates. That's Trello.
+Trello is an intuitive and powerful tool for organizing ideas, tasks, and workflows.  
+It allows teams to manage projects with a **drag-and-drop interface**, featuring lists and cards that store **comments, attachments, and collaboration tools**.  
 
-### Disclaimer
-I coded this project while following a long tutorial on a Youtube channel, so I couldn't say it is completely mine.
+## 🛸 Deployment
+Website deployment is available at: https://trello-web-sable-kappa.vercel.app/  
 
-However, I am confident that I understand every single line of code that I have written, because I didn't just "copy and paste" from the tutorial. 
-Instead, I skimmed through it quickly and tried to redo everything by myself. 
+## 🚀 Features  
 
-So if you are a recruiter seeing this project, you should not be worried about my knowledge and skills. I hope I will have a chance to work at your organization.
+✅ **User Authentication**      
+- Login - register - logout with JWT token
+- Email verification for new accounts
+- Auto refresh token mechanism
+    
+✅ **User Profile Management**    
+- Update user info: displayName, password
+- Upload avatar (using Cloudinary)
 
-## Feature list
-- User authentication with JWT token
-- Verify account via email
-- Refresh token
-- Update user's information, upload user's avatar
-- Get all boards, create board, update board, get board details
-- Move card to another column
-- Create card, update card, upload card cover
-- Create column, update column, delete column
+✅ **Theme switching**    
+- Select app theme: light, dark or system-based
 
-## Technology
-- Runtime: NodeJS
-- Library: ReactJS, MaterialUI
+✅ **Board Management**     
+- Create board
+- See board list with pagination and responsive grid
+- See board details, update board info
+
+✅ **Invite user**   
+- Invite users to board, with real time execution by using socket
+
+✅ **Column management**   
+- Create and delete column, update column title
+- Use dnd-kit to drag and drop columns in a board
+
+✅ **Card Management**    
+- Create and delete card, update card title
+- Use dnd-kit to drag cards in one column or between different columns in a board
+- Add comments to card
+
+---
+
+## 🛠️ Tech Stack  
+
+🔹 **Runtime**: Node.js  
+🔹 **Frameworks and fundamental libraries**: React.js, dnd-kit, socket.io   
+🔹 **UI Library**: Material-UI  
+
+
+## 📸 Screen shots
+
+### Board list screen
+![alt text](image-1.png)
+
+### Board list screen dark mode
+![alt text](image-2.png)
+
+### Board details screen
+![alt text](image-3.png)
+
+### Profile screen
+![alt text](image-4.png)
+
+### Card details modal
+![alt text](image-5.png)
