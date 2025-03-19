@@ -5,6 +5,7 @@ It allows teams to manage projects with a **drag-and-drop interface**, featuring
 
 ## 🛸 Deployment
 Website deployment is available at: https://trello-web-sable-kappa.vercel.app/  
+APIs are available at: https://trello-api-aqqf.onrender.com
 
 ## 🚀 Features  
 
@@ -42,8 +43,9 @@ Website deployment is available at: https://trello-web-sable-kappa.vercel.app/
 ## 🛠️ Tech Stack  
 
 🔹 **Runtime**: Node.js  
-🔹 **Frameworks and fundamental libraries**: React.js, dnd-kit, socket.io   
-🔹 **UI Library**: Material-UI  
+🔹 **Frontend**: React.js, Redux, dnd-kit, socket.io, Material-UI    
+🔹 **Backend**: ExpressJS, socket.io, multer, cloudinary
+🔹 **Database**: MongoDB    
 
 
 ## 📸 Screen shots
