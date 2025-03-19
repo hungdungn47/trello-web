@@ -49,16 +49,16 @@ Website deployment is available at: https://trello-web-sable-kappa.vercel.app/
 ## 📸 Screen shots
 
 ### Board list screen
-![alt text](image-1.png)
+![alt text](readme-images/image-1.png)
 
 ### Board list screen dark mode
-![alt text](image-2.png)
+![alt text](readme-images/image-2.png)
 
 ### Board details screen
-![alt text](image-3.png)
+![alt text](readme-images/image-3.png)
 
 ### Profile screen
-![alt text](image-4.png)
+![alt text](readme-images/image-4.png)
 
 ### Card details modal
-![alt text](image-5.png)
+![alt text](readme-images/image-5.png)
